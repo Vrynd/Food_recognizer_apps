@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeApps.lightTheme,
       darkTheme: ThemeApps.darkTheme,
       themeMode: ThemeMode.system,
+      home: MyHomePage(title: 'Food Recognizer App'),
     );
   }
 }
