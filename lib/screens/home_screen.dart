@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:food_recognizer_app/controller/home_provider.dart';
+import 'package:food_recognizer_app/widget/camera_or_gallery_widget.dart';
 import 'package:food_recognizer_app/widget/scaffold_widget.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => HomeProvider(),
+      child: const _HomeView(),
+    );
+  }
+}
+
+class _HomeView extends StatelessWidget {
+  const _HomeView();
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +33,7 @@ class HomeScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: HomeBody(),
+      body: const HomeBody(),
       bottomNavigationBar: BottomAppBar(
         color: Theme.of(context).colorScheme.surfaceContainerLowest,
         child: Row(
@@ -30,7 +45,7 @@ class HomeScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  minimumSize: Size(double.infinity, 52),
+                  minimumSize: const Size(double.infinity, 52),
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   elevation: 0,
                 ),
@@ -47,17 +62,25 @@ class HomeScreen extends StatelessWidget {
             SizedBox(width: 8),
             Expanded(
               flex: 1,
-              child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+              child: Builder(
+                builder: (context) => ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    minimumSize: Size(double.infinity, 52),
+                    backgroundColor: Theme.of(
+                      context,
+                    ).colorScheme.surfaceContainerHigh,
+                    elevation: 0,
                   ),
-                  minimumSize: Size(double.infinity, 52),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  elevation: 0,
+                  onPressed: () => context.read<HomeProvider>().openGallery(),
+                  label: Icon(
+                    Icons.upload_file_outlined,
+                    size: 30,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
-                onPressed: () {},
-                label: Icon(Icons.upload_file_outlined, size: 30, color: Theme.of(context).colorScheme.onPrimary,),
               ),
             ),
           ],
@@ -67,61 +90,19 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class HomeBody extends StatefulWidget {
-  const HomeBody({
-    super.key,
-  });
+class HomeBody extends StatelessWidget {
+  const HomeBody({super.key});
 
-  @override
-  State<HomeBody> createState() => _HomeBodyState();
-}
-
-class _HomeBodyState extends State<HomeBody> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Food Recognizer',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Arahkan kamera ke makanan yang ingin diidentifikasi',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 16),
-              Container(
-                height: 450,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerLowest,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                'Apabila kesulitan mengidentifikasi makanan dengan kamera. anda dapat menggunakan metode upload gambar dengan sebagai alternatif',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w500),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+          child: const CameraOrGalleryWidget(),
         ),
       ),
     );
   }
 }
+
