@@ -110,28 +110,30 @@ class HomeBody extends StatelessWidget {
               const SizedBox(height: 24),
               CameraOrGalleryWidget(),
               const SizedBox(height: 24),
-              ListTile(
-                tileColor: Theme.of(context).colorScheme.surfaceContainerLowest,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadiusGeometry.circular(16),
-                ),
-
-                title: Text(
-                  'Nama Makanan',
-                  style: Theme.of(context).textTheme.titleMedium,
-                ),
-                trailing: Text(
-                  '75%',
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.primary,
-                    fontWeight: FontWeight.w600,
+              InkWell(
+                child: ListTile(
+                  tileColor: Theme.of(
+                    context,
+                  ).colorScheme.surfaceContainerLowest,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(16),
                   ),
-                ),
-                contentPadding: EdgeInsets.symmetric(
-                  vertical: 4,
-                  horizontal: 14,
+
+                  title: Text(
+                    'Nama Makanan',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  trailing: Text(
+                    '0%',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: 4,
+                    horizontal: 14,
+                  ),
                 ),
               ),
             ],
