@@ -1,23 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:food_recognizer_app/controller/home_provider.dart';
-import 'package:food_recognizer_app/widget/camera_or_gallery_widget.dart';
+import 'package:food_recognizer_app/controller/image_preview_provider.dart';
+import 'package:food_recognizer_app/widget/image_preview_widget.dart';
 import 'package:food_recognizer_app/widget/scaffold_widget.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => HomeProvider(),
-      child: const _HomeView(),
-    );
-  }
-}
-
-class _HomeView extends StatelessWidget {
-  const _HomeView();
 
   @override
   Widget build(BuildContext context) {
@@ -74,9 +62,10 @@ class _HomeView extends StatelessWidget {
                     ).colorScheme.surfaceContainerHigh,
                     elevation: 0,
                   ),
-                  onPressed: () => context.read<HomeProvider>().openGallery(),
+                  onPressed: () =>
+                      context.read<ImagePreviewProvider>().openGallery(),
                   label: Icon(
-                    Icons.upload_file_outlined,
+                    Icons.image_outlined,
                     size: 30,
                     color: Theme.of(context).colorScheme.primary,
                   ),
@@ -99,10 +88,56 @@ class HomeBody extends StatelessWidget {
       child: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: const CameraOrGalleryWidget(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Yuk, Kenali Makananmu!',
+                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Ambil atau unggah foto makananmu, dan temukan hasil identifikasinya',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 24),
+              CameraOrGalleryWidget(),
+              const SizedBox(height: 24),
+              ListTile(
+                tileColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusGeometry.circular(16),
+                ),
+
+                title: Text(
+                  'Nama Makanan',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                trailing: Text(
+                  '75%',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.primary,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: 4,
+                  horizontal: 14,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
-

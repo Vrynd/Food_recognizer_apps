@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:food_recognizer_app/controller/image_preview_provider.dart';
 import 'package:food_recognizer_app/routes/route_navigation.dart';
 import 'package:food_recognizer_app/screens/home_screen.dart';
 import 'package:food_recognizer_app/themes/theme_apps.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => ImagePreviewProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,5 +36,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
