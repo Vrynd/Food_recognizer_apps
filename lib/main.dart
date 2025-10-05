@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:food_recognizer_app/controller/image_classification_provider.dart';
 import 'package:food_recognizer_app/controller/image_preview_provider.dart';
 import 'package:food_recognizer_app/routes/route_navigation.dart';
 import 'package:food_recognizer_app/screens/home_screen.dart';
+import 'package:food_recognizer_app/service/image_classification_service.dart';
 import 'package:food_recognizer_app/themes/theme_apps.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final imageClassificationService = ImageClassificationService();
+  await imageClassificationService.initHelper();
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => ImagePreviewProvider()),
+        ChangeNotifierProvider(
+          create: (_) =>
+              ImageClassificationProvider(imageClassificationService),
+        ),
       ],
       child: const MyApp(),
     ),

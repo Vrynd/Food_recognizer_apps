@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:food_recognizer_app/controller/image_classification_provider.dart';
 import 'package:food_recognizer_app/controller/image_preview_provider.dart';
-import 'package:food_recognizer_app/widget/image_preview_widget.dart';
+import 'package:food_recognizer_app/widget/home_body_widget.dart';
 import 'package:food_recognizer_app/widget/scaffold_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -12,6 +14,7 @@ class HomeScreen extends StatelessWidget {
     return ScaffoldWigdet(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
         title: Text(
           'Food Recognizer',
@@ -21,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      body: const HomeBody(),
+      body: const HomeBodyWidget(),
       bottomNavigationBar: BottomAppBar(
         color: Theme.of(context).colorScheme.surfaceContainerLowest,
         child: Row(
@@ -37,7 +40,33 @@ class HomeScreen extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   elevation: 0,
                 ),
-                onPressed: () {},
+                onPressed: () async {
+                  final imagePath = context
+                      .read<ImagePreviewProvider>()
+                      .imagePath;
+                  if (imagePath != null) {
+                    final file = File(imagePath);
+                    await context
+                        .read<ImageClassificationProvider>()
+                        .runClassification(file);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                        duration: const Duration(seconds: 2),
+                        padding: const EdgeInsets.all(16),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          "Ambil atau unggah gambar terlebih dahulu",
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
+                                color: Theme.of(context).colorScheme.onErrorContainer,
+                              ),
+                        ),
+                      ),
+                    );
+                  }
+                },
                 child: Text(
                   'Identifikasi Gambar',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -73,71 +102,6 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class HomeBody extends StatelessWidget {
-  const HomeBody({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 22),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(
-                'Yuk, Kenali Makananmu!',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Ambil atau unggah foto makananmu, dan temukan hasil identifikasinya',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 24),
-              CameraOrGalleryWidget(),
-              const SizedBox(height: 24),
-              InkWell(
-                child: ListTile(
-                  tileColor: Theme.of(
-                    context,
-                  ).colorScheme.surfaceContainerLowest,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusGeometry.circular(16),
-                  ),
-
-                  title: Text(
-                    'Nama Makanan',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                  trailing: Text(
-                    '0%',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 14,
-                  ),
-                ),
-              ),
-            ],
-          ),
         ),
       ),
     );

@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:food_recognizer_app/controller/image_classification_provider.dart';
 import 'package:food_recognizer_app/controller/image_preview_provider.dart';
 import 'package:provider/provider.dart';
 
-class CameraOrGalleryWidget extends StatelessWidget {
-  const CameraOrGalleryWidget({super.key});
+class ImagePreviewWidget extends StatelessWidget {
+  const ImagePreviewWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -64,6 +65,9 @@ class CameraOrGalleryWidget extends StatelessWidget {
                   ),
                   onPressed: () {
                     context.read<ImagePreviewProvider>().clearImage();
+                    context
+                        .read<ImageClassificationProvider>()
+                        .clearClassification();
                   },
                 ),
               ),
