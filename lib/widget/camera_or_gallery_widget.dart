@@ -59,7 +59,12 @@ class CameraOrGalleryWidget extends StatelessWidget {
                         size: 26,
                         color: Theme.of(context).colorScheme.onInverseSurface,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        final provider = context.read<HomeProvider>();
+                        if (provider.imagePath != null) {
+                          provider.cropImage(provider.imagePath!);
+                        }
+                      },
                     ),
                   ),
                   Positioned(
