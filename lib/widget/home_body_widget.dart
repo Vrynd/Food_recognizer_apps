@@ -13,6 +13,7 @@ class HomeBodyWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 32),
         children: [
           const SizedBox(height: 16),
+
           Text(
             'Yuk, Kenali Makananmu!',
             style: Theme.of(
@@ -21,6 +22,7 @@ class HomeBodyWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
+
           Text(
             'Ambil atau unggah foto makananmu, dan temukan hasil identifikasinya',
             style: Theme.of(
@@ -29,60 +31,76 @@ class HomeBodyWidget extends StatelessWidget {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
+
           const ImagePreviewWidget(),
+
           const SizedBox(height: 24),
+
           Consumer<ImageClassificationProvider>(
             builder: (context, provider, child) {
               final classifications = provider.classifications;
               if (classifications.isEmpty) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: ListTile(
-                    tileColor: Theme.of(
-                      context,
-                    ).colorScheme.surfaceContainerLowest,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    title: const Text("Nama Makanan"),
-                    trailing: Text(
-                      "0.0%",
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                );
+                return EmptyStateTile();
               }
 
               return Column(
                 children: classifications.entries.map((entry) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: ListTile(
-                      tileColor: Theme.of(
-                        context,
-                      ).colorScheme.surfaceContainerLowest,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      title: Text(entry.key),
-                      trailing: Text(
-                        "${(entry.value * 100).toStringAsFixed(1)}%",
-                        style: Theme.of(context).textTheme.titleMedium
-                            ?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
-                    ),
+                  return ResultStateTile(
+                    label: entry.key,
+                    confidence: entry.value.toDouble(),
                   );
                 }).toList(),
               );
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class EmptyStateTile extends StatelessWidget {
+  const EmptyStateTile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      tileColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      title: const Text("Nama Makanan"),
+      trailing: Text(
+        "0.0%",
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    );
+  }
+}
+
+class ResultStateTile extends StatelessWidget {
+  final String label;
+  final double confidence;
+
+  const ResultStateTile({
+    super.key,
+    required this.label,
+    required this.confidence,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      tileColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      title: Text(label),
+      trailing: Text(
+        "${(confidence * 100).toStringAsFixed(1)}%",
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }

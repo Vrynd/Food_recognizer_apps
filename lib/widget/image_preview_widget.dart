@@ -1,4 +1,5 @@
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:food_recognizer_app/controller/image_classification_provider.dart';
 import 'package:food_recognizer_app/controller/image_preview_provider.dart';
@@ -23,53 +24,17 @@ class ImagePreviewWidget extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
+
               Positioned(
                 bottom: 14,
                 left: 14,
-                child: IconButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                      Theme.of(
-                        context,
-                      ).colorScheme.inverseSurface.withValues(alpha: .4),
-                    ),
-                  ),
-                  icon: Icon(
-                    Icons.crop_outlined,
-                    size: 26,
-                    color: Theme.of(context).colorScheme.onInverseSurface,
-                  ),
-                  onPressed: () {
-                    final provider = context.read<ImagePreviewProvider>();
-                    if (provider.imagePath != null) {
-                      provider.cropImage(provider.imagePath!);
-                    }
-                  },
-                ),
+                child: CropImageButton(),
               ),
+
               Positioned(
                 top: 14,
                 right: 14,
-                child: IconButton(
-                  style: ButtonStyle(
-                    backgroundColor: WidgetStatePropertyAll(
-                      Theme.of(
-                        context,
-                      ).colorScheme.inverseSurface.withValues(alpha: .4),
-                    ),
-                  ),
-                  icon: Icon(
-                    Icons.delete_outline,
-                    size: 26,
-                    color: Theme.of(context).colorScheme.onInverseSurface,
-                  ),
-                  onPressed: () {
-                    context.read<ImagePreviewProvider>().clearImage();
-                    context
-                        .read<ImageClassificationProvider>()
-                        .clearClassification();
-                  },
-                ),
+                child: DeleteImageButton(),
               ),
             ],
           );
@@ -93,6 +58,66 @@ class ImagePreviewWidget extends StatelessWidget {
               ),
             ),
           );
+        }
+      },
+    );
+  }
+}
+
+class DeleteImageButton extends StatelessWidget {
+  const DeleteImageButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(
+          Theme.of(
+            context,
+          ).colorScheme.inverseSurface.withValues(alpha: .4),
+        ),
+      ),
+      icon: Icon(
+        Icons.delete_outline,
+        size: 26,
+        color: Theme.of(context).colorScheme.onInverseSurface,
+      ),
+      onPressed: () {
+        context.read<ImagePreviewProvider>().clearImage();
+        context
+            .read<ImageClassificationProvider>()
+            .clearClassification();
+      },
+    );
+  }
+}
+
+class CropImageButton extends StatelessWidget {
+  const CropImageButton({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(
+          Theme.of(
+            context,
+          ).colorScheme.inverseSurface.withValues(alpha: .4),
+        ),
+      ),
+      icon: Icon(
+        Icons.crop_outlined,
+        size: 26,
+        color: Theme.of(context).colorScheme.onInverseSurface,
+      ),
+      onPressed: () {
+        final provider = context.read<ImagePreviewProvider>();
+        if (provider.imagePath != null) {
+          provider.cropImage(provider.imagePath!);
         }
       },
     );

@@ -1,7 +1,25 @@
 import 'dart:io';
 import 'dart:isolate';
+
 import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
+
+class InferenceModel {
+  final File imageFile;
+  int interpreterAddress;
+  List<String> labels;
+  List<int> inputShape;
+  List<int> outputShape;
+  late SendPort responsePort;
+
+  InferenceModel(
+    this.imageFile,
+    this.interpreterAddress,
+    this.labels,
+    this.inputShape,
+    this.outputShape,
+  );
+}
 
 class IsolateInference {
   static const String _debugName = "TFLITE_INFERENCE";
@@ -85,19 +103,4 @@ class IsolateInference {
   }
 }
 
-class InferenceModel {
-  final File imageFile;
-  int interpreterAddress;
-  List<String> labels;
-  List<int> inputShape;
-  List<int> outputShape;
-  late SendPort responsePort;
 
-  InferenceModel(
-    this.imageFile,
-    this.interpreterAddress,
-    this.labels,
-    this.inputShape,
-    this.outputShape,
-  );
-}

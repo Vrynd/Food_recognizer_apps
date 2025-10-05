@@ -50,7 +50,6 @@ class ImageClassificationService {
     )..responsePort = responsePort.sendPort;
 
     isolateInference.sendPort.send(isolateModel);
-
     final result = await responsePort.first as Map<String, double>;
     responsePort.close();
     return result;

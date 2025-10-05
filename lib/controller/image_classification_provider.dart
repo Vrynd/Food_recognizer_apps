@@ -5,7 +5,6 @@ import 'package:food_recognizer_app/service/image_classification_service.dart';
 
 class ImageClassificationProvider extends ChangeNotifier {
   final ImageClassificationService _service;
-
   ImageClassificationProvider(this._service);
 
   Map<String, num> _classifications = {};

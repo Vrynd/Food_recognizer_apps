@@ -13,7 +13,6 @@ class ImageService {
 
     do {
       compressQuality -= 10;
-
       newByte = img.encodeJpg(image, quality: compressQuality);
 
       length = newByte.length;
