@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:food_recognizer_app/data/models/meal.dart';
 import 'package:http/http.dart' as http;
 
