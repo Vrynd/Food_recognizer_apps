@@ -7,8 +7,8 @@ class ImageClassificationProvider extends ChangeNotifier {
   final ImageClassificationService _service;
   ImageClassificationProvider(this._service);
 
-  Map<String, num> _classifications = {};
-  Map<String, num> get classifications {
+  Map<String, double> _classifications = {};
+  Map<String, double> get classifications {
     if (_classifications.isEmpty) return {};
     final sortedEntries = _classifications.entries.toList()
       ..sort((a, b) => b.value.compareTo(a.value));
@@ -16,11 +16,12 @@ class ImageClassificationProvider extends ChangeNotifier {
     return {sortedEntries.first.key: sortedEntries.first.value};
   }
 
-  Map<String, num> get classificationsThree => Map.fromEntries(
+  Map<String, double> get classificationsThree => Map.fromEntries(
     (_classifications.entries.toList()
           ..sort((a, b) => a.value.compareTo(b.value)))
         .reversed
-        .take(3),
+        .take(3)
+        .map((e) => MapEntry(e.key, e.value.toDouble())),
   );
 
   Future<void> runClassification(File imageFile) async {

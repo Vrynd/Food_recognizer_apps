@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food_recognizer_app/controller/image_classification_provider.dart';
 import 'package:food_recognizer_app/controller/image_preview_provider.dart';
+import 'package:food_recognizer_app/controller/meal_provider.dart';
+import 'package:food_recognizer_app/data/api/api_service.dart';
 import 'package:food_recognizer_app/routes/route_navigation.dart';
 import 'package:food_recognizer_app/screens/home_screen.dart';
 import 'package:food_recognizer_app/screens/result_screen.dart';
@@ -16,6 +18,10 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider(create: (context) => ApiService()),
+        ChangeNotifierProvider(
+          create: (context) => MealProvider(context.read<ApiService>()),
+        ),
         ChangeNotifierProvider(create: (context) => ImagePreviewProvider()),
         ChangeNotifierProvider(
           create: (_) =>

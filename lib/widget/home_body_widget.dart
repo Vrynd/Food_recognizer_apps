@@ -12,7 +12,7 @@ class HomeBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
         children: [
           const SizedBox(height: 16),
 
