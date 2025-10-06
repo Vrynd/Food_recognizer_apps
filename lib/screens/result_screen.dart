@@ -45,7 +45,7 @@ class ResultScreen extends StatelessWidget {
           ),
           onPressed: () async {},
           child: Text(
-            'Lihat Bahan Makanan',
+            'Lihat Nutrisi',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.onPrimary,
