@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_recognizer_app/controller/image_classification_provider.dart';
+import 'package:food_recognizer_app/controller/image_preview_provider.dart';
+import 'package:food_recognizer_app/routes/route_navigation.dart';
 import 'package:food_recognizer_app/widget/image_preview_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -102,6 +104,18 @@ class ResultStateTile extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
+      onTap: () {
+        final imageProvider = context.read<ImagePreviewProvider>();
+        Navigator.pushNamed(
+          context,
+          RouteNavigation.result.name,
+          arguments: {
+            "label": label,
+            "confidence": confidence,
+            "imagePath": imageProvider.imagePath,
+          },
+        );
+      },
     );
   }
 }
