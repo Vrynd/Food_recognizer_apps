@@ -16,6 +16,13 @@ class ImageClassificationProvider extends ChangeNotifier {
     return {sortedEntries.first.key: sortedEntries.first.value};
   }
 
+  Map<String, num> get classificationsThree => Map.fromEntries(
+    (_classifications.entries.toList()
+          ..sort((a, b) => a.value.compareTo(b.value)))
+        .reversed
+        .take(3),
+  );
+
   Future<void> runClassification(File imageFile) async {
     _classifications = await _service.runInference(imageFile);
     notifyListeners();

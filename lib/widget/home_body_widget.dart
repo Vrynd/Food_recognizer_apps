@@ -45,13 +45,10 @@ class HomeBodyWidget extends StatelessWidget {
                 return EmptyStateTile();
               }
 
-              return Column(
-                children: classifications.entries.map((entry) {
-                  return ResultStateTile(
-                    label: entry.key,
-                    confidence: entry.value.toDouble(),
-                  );
-                }).toList(),
+              final entry = classifications.entries.first;
+              return ResultStateTile(
+                label: entry.key,
+                confidence: entry.value.toDouble(),
               );
             },
           ),
