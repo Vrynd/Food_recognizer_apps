@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food_recognizer_app/controller/image_classification_provider.dart';
 import 'package:food_recognizer_app/controller/image_preview_provider.dart';
+import 'package:food_recognizer_app/controller/meal_provider.dart';
+import 'package:food_recognizer_app/data/api/api_service.dart';
 import 'package:food_recognizer_app/routes/route_navigation.dart';
 import 'package:food_recognizer_app/screens/home_screen.dart';
+import 'package:food_recognizer_app/screens/result_screen.dart';
 import 'package:food_recognizer_app/service/image_classification_service.dart';
 import 'package:food_recognizer_app/themes/theme_apps.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +18,10 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        Provider(create: (context) => ApiService()),
+        ChangeNotifierProvider(
+          create: (context) => MealProvider(context.read<ApiService>()),
+        ),
         ChangeNotifierProvider(create: (context) => ImagePreviewProvider()),
         ChangeNotifierProvider(
           create: (_) =>
@@ -38,10 +45,21 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeApps.darkTheme,
       themeMode: ThemeMode.system,
       initialRoute: RouteNavigation.home.name,
-      routes: {
-        RouteNavigation.home.name: (context) => const HomeScreen(),
-        // RouteNavigation.result.name: (context) => const ResultScreen(),
-        // RouteNavigation.details.name: (context) => const DetailsScreen(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case 'home':
+            return MaterialPageRoute(builder: (_) => const HomeScreen());
+          case 'result':
+            final args = settings.arguments as Map<String, dynamic>;
+            return MaterialPageRoute(
+              builder: (_) => ResultScreen(
+                label: args['label'] as String,
+                confidence: args['confidence'] as double,
+                imagePath: args['imagePath'] as String,
+              ),
+            );
+        }
+        return null;
       },
     );
   }

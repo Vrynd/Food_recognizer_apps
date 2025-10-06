@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:food_recognizer_app/controller/image_classification_provider.dart';
+import 'package:food_recognizer_app/controller/image_preview_provider.dart';
+import 'package:food_recognizer_app/routes/route_navigation.dart';
 import 'package:food_recognizer_app/widget/image_preview_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +12,7 @@ class HomeBodyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: ListView(
-        padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 32),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 32),
         children: [
           const SizedBox(height: 16),
 
@@ -43,13 +45,10 @@ class HomeBodyWidget extends StatelessWidget {
                 return EmptyStateTile();
               }
 
-              return Column(
-                children: classifications.entries.map((entry) {
-                  return ResultStateTile(
-                    label: entry.key,
-                    confidence: entry.value.toDouble(),
-                  );
-                }).toList(),
+              final entry = classifications.entries.first;
+              return ResultStateTile(
+                label: entry.key,
+                confidence: entry.value.toDouble(),
               );
             },
           ),
@@ -102,6 +101,18 @@ class ResultStateTile extends StatelessWidget {
           fontWeight: FontWeight.w600,
         ),
       ),
+      onTap: () {
+        final imageProvider = context.read<ImagePreviewProvider>();
+        Navigator.pushNamed(
+          context,
+          RouteNavigation.result.name,
+          arguments: {
+            "label": label,
+            "confidence": confidence,
+            "imagePath": imageProvider.imagePath,
+          },
+        );
+      },
     );
   }
 }

@@ -1,7 +1,6 @@
 enum RouteNavigation {
   home('home'),
-  result('result'),
-  details('details');
+  result('result');
 
   final String name;
   const RouteNavigation(this.name);
